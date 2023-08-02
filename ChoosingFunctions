@@ -1,0 +1,17 @@
+def Choosing():
+    while True:
+        Choice=input("Please Choose One Of These Bases [2, 8, 10 , 16]: ")
+        if not Choice.isdigit():
+            print("Not A Number, Please Try Again")
+            continue
+        Choice=int(Choice)
+        
+        if Choice != 2 and Choice != 8 and Choice != 10 and Choice != 16:
+            print("Choice Does Not Exist, Please Try Again")
+        else:
+            break
+    return Choice
+Choice=Choosing()
+def Choosing2(Choice):
+    Choice2=input("You Would Like To Convert Base "+str(Choice)+" To?: ")
+    return Choice2
