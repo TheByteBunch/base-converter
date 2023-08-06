@@ -1,0 +1,248 @@
+bases=[2,8,10,16]
+binary_digits=[0,1]
+octal_digits=[0,1,2,3,4,5,6,7]
+decimal_digits=[0,1,2,3,4,5,6,7,8,9]
+hex_digits=[0,1,2,3,4,5,6,7,8,9,"A","B","C","D","E","F"]
+out=False
+def choose_from_base(bases):
+    while True:
+        choice=input("What Base Would You Like To Convert From [2, 8, 10 ,16]: ")
+        if not choice.isdigit():
+            print("Input Must Be A Number, Please Try Again.")
+            continue
+        choice=int(choice)
+        if choice not in bases:
+            print("Not A Choice, Please Try Again.")
+            continue
+        break
+    return choice
+from_base=choose_from_base(bases)
+available_bases = list(filter(lambda b: b != from_base, bases))
+def choosing_2(from_base):
+    while True:
+        choice_2=input(f"What Base Would You Like To Convert To? {available_bases}: ")
+        if not choice_2.isdigit():
+            print("Input Must Be A Number, Please Try Again.")
+            continue
+        choice_2=int(choice_2)
+        choice_2=int(choice_2)
+        if choice_2 not in available_bases:
+            print("Choice Does Not Exist, Please Try Again.")
+            continue
+        break
+    return choice_2
+to_base=choosing_2(from_base)
+def inputting_number(choice):
+    while True:
+        number=input(f"Please Input A Base {choice} Number: ")
+        break
+    return number
+number=inputting_number(from_base)
+def number_validation(number,from_base):
+    out=False
+    while True:
+        if  not number.isdigit() and from_base!=16:
+            print("Input Must Be A Number, Please Try Again.")
+            number=inputting_number(from_base)
+            continue
+        if from_base in [2,8,10]:
+            number=int(number)
+        if from_base==2:
+            for digit in str(number):
+                if digit not in str(binary_digits):
+                    print("Number Is Not A Valid Base 2 Number, Please Try Again.")
+                    out=True
+                    break
+        elif from_base==8:
+            for digit in str(number):
+                if digit not in str(octal_digits):
+                    print("Number Is Not A Valid Base 8 Number, Please Try Again.")
+                    out=True
+                    break
+        elif from_base==10:
+            for digit in str(number):
+                if digit not in str(decimal_digits):
+                    print("Number Is Not A Valid Base 10 Number, Please Try Again.")
+                    out=True
+                    break
+        elif from_base==16:
+            for digit in str(number):
+                if digit not in str(hex_digits):
+                    print("Number Is Not A Valid Base 16 Number, Please Try Again.")
+                    out=True
+                    break
+        if out==True:
+            out=False
+            number=inputting_number(from_base)
+            continue
+        break
+    return number
+number=number_validation(number,from_base)
+print("number is: ",number)
+def binary_to_decimal_conversion(number):
+    Number = str(number)
+    Numberlen= len(Number)
+    v=1
+    total=0
+    NumberI = []
+    for i in range(Numberlen):
+        NumberI.append(int(Number[i]))
+    for i in range(1,Numberlen+1):
+        z = NumberI[Numberlen-i]
+        z=z*v
+        v=v*2
+        total=total+z
+    return total
+def decimal_to_binary(number):
+    original_number=number
+    base=2
+    digits = "0123456789ABCDEF"
+    converted_number = ""
+
+    while number > 0:
+        remainder = number % base
+        converted_number += digits[remainder] 
+        number //= base
+
+    if converted_number == "":
+        converted_number = "0"
+    else:
+        converted_number=converted_number[::-1]
+    return converted_number
+def grouping(number,size):
+    number=str(number)
+    number=number[::-1]
+    while True:
+        if len(number)%size !=0:
+            number=number+"0"
+        else:
+            break
+    number=number[::-1]
+    cluster_size = size
+    clusters = [number[i:i+cluster_size] for i in range(0, len(number), cluster_size)]
+    return clusters
+def conversion_logic(number,from_base,to_base):
+    original_number=number
+    if from_base==2 and to_base==8:
+        numbers=[]
+        number=str(number)
+        number=number[::-1]
+        while True:
+            if len(number)%3 !=0:
+                number=number+"0"
+            else:
+                break
+        number=number[::-1]
+        cluster_size = 3
+        clusters = [number[i:i+cluster_size] for i in range(0, len(number), cluster_size)]
+        for i in clusters:
+            numbers.append(binary_to_decimal_conversion(i))
+        print(f"{original_number} In Binary Converted To Octal Is: ",end="")
+        for i in numbers:
+            print(i,end="")
+
+
+
+
+
+    elif from_base==2 and to_base==10:
+        total=binary_to_decimal_conversion(number)
+        print(f"{original_number} In Binary Converted To Decimal Is: {total}")
+
+
+
+
+
+
+    elif from_base==2 and to_base==16:
+        numbers=[]
+        for i in grouping(number,4):
+            numbers.append(binary_to_decimal_conversion(i))
+        print(f"{original_number} In Binary Converted To Hexadecimal Is: ",end="")
+        for i in numbers:
+            if i==10:
+                i="A"
+            elif i==11:
+                i="B"
+            elif i==12:
+                i="C"
+            elif i==13:
+                i="D"
+            elif i==14:
+                i="E"
+            elif i==15:
+                i="F"
+            print(i,end="")
+
+
+
+
+    elif from_base==8 and to_base==2:
+        numbers=[]
+        for i in str(number):
+            numbers.append(decimal_to_binary(int(i)))
+        print(f"{original_number} In Octal Converted To Binary Is: ",end="")
+        for i in numbers:
+            if len(str(i)) < 3:
+                i = f"0{i}"
+            if i=="01":
+                i="0"+i
+            print(i,end="")
+
+
+
+
+
+    elif from_base==8 and to_base==10:
+        Number = number
+        Numberlen= len(Number)
+        v=1
+        total=0
+        NumberI = []
+        for i in range(Numberlen):
+            NumberI.append(int(Number[i]))
+        for i in range(1,Numberlen+1):
+            z = NumberI[Numberlen-i]
+            z=z*v
+            v=v*8
+            total=total+z
+        print(f"{original_number} In Octal Converted to Decimal Is: {total}")
+
+
+
+
+
+    elif from_base==8 and to_base==16:
+        numbers=[]
+        numbers1=[]
+        for i in str(number):
+            numbers.append(decimal_to_binary(int(i)))
+        for i in numbers:
+            if len(str(i)) < 3:
+                i = f"0{i}"
+            if i=="01":
+                i="0"+i
+            numbers1.append(i)
+        numbers=grouping("".join(numbers1),4)
+        for i in numbers:
+            if i=="0000":
+                numbers.remove(i)
+        total=[]
+        for i in numbers:
+            total.append(binary_to_decimal_conversion(i))
+        print(f"{original_number} In Octal Converted To Hexadecimal Is: ",end="")
+        for i in total:
+            if i==10:
+                i="A"
+            elif i==11:
+                i="B"
+            elif i==12:
+                i="C"
+            elif i==13:
+                i="D"
+            elif i==14:
+                i="E"
+            elif i==15:
+                i="F"
+            print(i,end="")
+conversion_logic(number,from_base,to_base)
