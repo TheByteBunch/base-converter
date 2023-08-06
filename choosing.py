@@ -25,7 +25,7 @@ def choose_to_base(from_base, bases):
             print("Input Must Be A Number, Please Try Again.")
             continue
         choice_2 = int(choice_2)
-        if choice_2 not in bases:
+        if choice_2 not in available_bases:
             print("Choice Does Not Exist, Please Try Again.")
             continue
         # if choice_2 == choice:  # we've already checked this by not putting from_base in available_bases
