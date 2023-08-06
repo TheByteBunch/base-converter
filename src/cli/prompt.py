@@ -2,7 +2,7 @@ import inquirer
 from src.bases.base_names import Base
 
 
-def select_base() -> dict[str, str]:
+def select_base() -> int:
     """prompts the user to select a base
 
     Returns:
@@ -18,4 +18,4 @@ def select_base() -> dict[str, str]:
 
     answer = inquirer.prompt(base_list)
 
-    return answer
+    return answer["input"]
