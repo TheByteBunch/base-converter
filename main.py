@@ -1,18 +1,22 @@
-from choosing import choose_from_base, choose_to_base, choose_input_number
-from validating import validate_input_number
-from converting import convert_base
+from sys import path
+from src.cli.prompt import select_base
+from src.utils.validator import Validator
+from src.core.convert import convert_base
 
-bases = [2, 8, 10, 16]
 
-from_base = choose_from_base(bases)
+def main():
+    origin_base = select_base()
+    entered_number = input("Enter number:")
 
-to_base = choose_to_base(from_base, bases)
+    Validator.validate_input(entered_number, origin_base)
 
-valid_input_number = False
-while not valid_input_number:
-    input_number = choose_input_number(from_base)
-    valid_input_number = validate_input_number(from_base, input_number)
+    destination_base = select_base()
 
-output_number = convert_base(from_base, to_base, input_number)
+    converted_number = convert_base(
+        entered_number, origin_base, destination_base)
+    print(converted_number)
 
-print(f'Your result is {output_number}, a base {to_base} number.')
+
+if __name__ == "__main__":
+    path.append('../')
+    main()
